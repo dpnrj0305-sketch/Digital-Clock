@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Digital Clock</title>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* 1. Sleek Dark Background */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 2. Glassmorphism Container with Neon Glow */
+    .clock-container {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 40px 60px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    /* 3. Typography Styling */
+    .time-text {
+      font-size: 5rem;
+      color: #00ffcc;
+      margin: 10px 0;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+      letter-spacing: 2px;
+    }
+
+    .date-text {
+      font-size: 1.2rem;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const DigitalClock = () => {
+      const [time, setTime] = useState(new Date());
+
+      useEffect(() => {
+        const timerId = setInterval(() => {
+          setTime(new Date());
+        }, 1000);
+        return () => clearInterval(timerId);
+      }, []);
+
+      // Format the date (e.g., "Sunday, April 26, 2026")
+      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = time.toLocaleDateString(undefined, dateOptions);
+
+      return (
+        <div className="clock-container">
+          <p className="date-text">{formattedDate}</p>
+          <h1 className="time-text">
+            {time.toLocaleTimeString()}
+          </h1>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<DigitalClock />);
+  </script>
+</body>
+</html>
